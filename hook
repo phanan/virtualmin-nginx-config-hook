@@ -19,7 +19,7 @@ if [ "$VIRTUALSERVER_ACTION" = "CREATE_DOMAIN" ] || [ "$VIRTUALSERVER_ACTION" = 
     listen          ${NGINX_PORT};
     server_name     ${VIRTUALSERVER_DOM};
 
-    location ~* ^.+\.(jpg|js|jpeg|png|ico|gif|txt|js|css|swf|zip|rar|avi|exe|mpg|mp3|wav|mpeg|asf|wmv)$ {
+    location ~* ^.+\.(jpg|js|jpeg|png|ico|bmp|webp|svg|gif|txt|js|css|swf|zip|rar|avi|exe|mpg|mp3|wav|mpeg|asf|wmv|flv|ttf|otf|eot|woff)$ {
         root        ${VIRTUALSERVER_PUBLIC_HTML_PATH};
         expires     max;
     }
@@ -50,7 +50,7 @@ server {
     ssl_ciphers \"EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS +RC4 RC4\"
     # --- end SSL fine-tuned block --- #
 
-    location ~* ^.+\.(jpg|js|jpeg|png|ico|gif|txt|js|css|swf|zip|rar|avi|exe|mpg|mp3|wav|mpeg|asf|wmv)$ {
+    location ~* ^.+\.(jpg|js|jpeg|png|ico|bmp|webp|svg|gif|txt|js|css|swf|zip|rar|avi|exe|mpg|mp3|wav|mpeg|asf|wmv|flv|ttf|otf|eot|woff)$ {
         root        ${VIRTUALSERVER_PUBLIC_HTML_PATH};
         expires     max;
     }
