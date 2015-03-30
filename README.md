@@ -41,7 +41,7 @@ Then, [configure the post domain modification script](https://www.virtualmin.com
 1. A symbolic link pointing to said file is created under `{nginx_conf_dir}/sites-enabled`
 1. `nginx` service is then reloaded and ready to serve
 
-When you delete a (subdomain), both the file and its symlink are removed.
+When you delete the (sub)domain, both the file and its symlink are removed.
 
 ## Configuration
 The hook works with the assumption that your nginx is configured to read domain config files from `sites-enabled` and `sites-available` directories, following the (arguably) [most common practice](https://www.digitalocean.com/community/tutorials/how-to-configure-the-nginx-web-server-on-a-virtual-private-server). Additionally, these variables can be configured to fit your needs:
