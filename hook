@@ -1,0 +1,79 @@
+#!/bin/sh
+
+NGINX_CONF_DIR="/etc/nginx"
+NGINX_PORT=80
+NGINX_SSL_PORT=443
+
+# First, create the required dirs to store the config files if not exist
+mkdir -p ${NGINX_CONF_DIR}/sites-available
+mkdir -p ${NGINX_CONF_DIR}/sites-enabled
+
+#
+# Create the nginx conf entry upon creating or modifying a domain
+#
+if [ "$VIRTUALSERVER_ACTION" = "CREATE_DOMAIN" ] || [ "$VIRTUALSERVER_ACTION" = "MODIFY_DOMAIN" ]; then
+    cd ${NGINX_CONF_DIR}/sites-available/
+
+    # Create the Nginx config directives into a sites-available entry
+    echo "server {
+    listen          ${NGINX_PORT};
+    server_name     ${VIRTUALSERVER_DOM};
+
+    location ~* ^.+\.(jpg|js|jpeg|png|ico|gif|txt|js|css|swf|zip|rar|avi|exe|mpg|mp3|wav|mpeg|asf|wmv)$ {
+        root        ${VIRTUALSERVER_PUBLIC_HTML_PATH};
+        expires     max;
+    }
+
+    location / {
+        proxy_pass  http://${VIRTUALSERVER_IP}:${VIRTUALSERVER_WEB_PORT};
+    }
+}" > ${VIRTUALSERVER_DOM}.conf
+
+    # If SSL in enabled, add the SSL directive too
+    if [ $VIRTUALSERVER_SSL -eq 1 ]; then
+        echo "
+server {
+    listen          ${NGINX_SSL_PORT} ssl;
+    server_name     ${VIRTUALSERVER_DOM};
+
+    ssl             on;
+    # Replace the following variable with VIRTUALSERVER_SSL_CERT if needed
+    ssl_certificate     ${VIRTUALSERVER_SSL_CHAIN}; 
+    ssl_certificate_key ${VIRTUALSERVER_SSL_KEY};
+
+    # The following block should be moved into the default http{} directive (nginx.conf) instead
+    # --- start SSL fine-tuned block --- #
+    ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers \"EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS +RC4 RC4\"
+    # --- end SSL fine-tuned block --- #
+
+    location ~* ^.+\.(jpg|js|jpeg|png|ico|gif|txt|js|css|swf|zip|rar|avi|exe|mpg|mp3|wav|mpeg|asf|wmv)$ {
+        root        ${VIRTUALSERVER_PUBLIC_HTML_PATH};
+        expires     max;
+    }
+
+    location / {
+        proxy_pass  https://${VIRTUALSERVER_IP}:${VIRTUALSERVER_WEB_SSLPORT};
+    }
+}" >> ${VIRTUALSERVER_DOM}.conf
+    fi
+
+    # Create a symlink if this is a new entry
+    if [ "$VIRTUALSERVER_ACTION" = "CREATE_DOMAIN" ]; then
+        ln -s ${NGINX_CONF_DIR}/sites-available/${VIRTUALSERVER_DOM}.conf ${NGINX_CONF_DIR}/sites-enabled/${VIRTUALSERVER_DOM}.conf
+    fi
+fi
+
+#
+# Delete the config file and the symlink if the entry is being deleted
+#
+if [ "$VIRTUALSERVER_ACTION" = "DELETE_DOMAIN" ]; then
+    rm -f ${NGINX_CONF_DIR}/sites-enabled/${VIRTUALSERVER_DOM}.conf ${NGINX_CONF_DIR}/sites-available/${VIRTUALSERVER_DOM}.conf
+fi
+
+# Reload nginx
+# /etc/init.d/nginx reload
+service nginx reload
