@@ -2,7 +2,7 @@
 
 A [Virtualmin](https://www.virtualmin.com/) hook to generate a nginx server config file post-Apache server setup.
 
-### Why?
+## Why?
 
 - [x] You have a dedicated server or a VPS
 - [x] You have a LAMP stack beautifully set up and configured
@@ -11,7 +11,7 @@ A [Virtualmin](https://www.virtualmin.com/) hook to generate a nginx server conf
 - [x] You have to manually create and manage those nginx `.conf` files after setting up a host in Virtualmin, and
 - [x] You ~~are too lazy for this shit~~ feel like your time can be used for something better
 
-### How?
+## How?
 Virtualmin can be configured to run a command (_hook_) before and after making changes to a server. In the command context, a lot of global variables are pre-populated by Virtualmin, ready to use. For example:
 
 ```bash
@@ -27,7 +27,7 @@ Take a look at `sample-dom-file` for a more complete example.
 
 All of these variable names will be available with a `$VIRTUALSERVER_` prefix, e.g. `$VIRTUALSERVER_UID`, `$VIRTUALSERVER_DOM` etc. Making use of them, we can write a shellscript to automate creating and managing the nginx config files on the fly.
 
-### No, really, how?
+## No, really, how?
 Oh ok...
 
 ```bash
@@ -43,7 +43,7 @@ Then, [configure the post domain modification script](https://www.virtualmin.com
 
 When you delete a (subdomain), both the file and its symlink are removed.
 
-### Configuration
+## Configuration
 The hook works with the assumption that your nginx is configured to read domain config files from `sites-enabled` and `sites-available` directories, following the (arguably) [most common practice](https://www.digitalocean.com/community/tutorials/how-to-configure-the-nginx-web-server-on-a-virtual-private-server). Additionally, these variables can be configured to fit your needs:
 
 ```bash
@@ -54,13 +54,13 @@ NGINX_SSL_PORT=443
 
 Other than that... not so much, sorry.
 
-### Known Limitations
+## Known Limitations
 * Upon Virtualmin domain update, the corresponding `.conf` file's content will be completely reset. If you have any custom modifications, they will be gone into oblivion
 * Domain disabling and re-enabling are not supported yet.
 
 <hr>
 
-### Disclaimer and License
+## Disclaimer and License
 MIT © [Phan An](http://phanan.net). 
 
 This package is created and shared with hope that it may help someone out there, but its owner shouldn't take any responsibility for any claim, damages or other liability whatsoever. See `LICENSE`.
