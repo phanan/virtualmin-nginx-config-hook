@@ -55,7 +55,7 @@ NGINX_SSL_PORT=443
 Other than that... not so much, sorry.
 
 ## Known Limitations
-* Upon Virtualmin domain update, the corresponding `.conf` file's content will be completely reset. If you have any custom modifications, they will be gone into oblivion
+* Upon Virtualmin domain update, the corresponding `.conf` file's content will be completely reset. If you have any custom modifications, they will be gone into oblivion.
 * Domain disabling and re-enabling are not supported yet.
 
 <hr>
