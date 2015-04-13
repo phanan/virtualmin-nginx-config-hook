@@ -63,4 +63,4 @@ Other than that... not so much, sorry.
 ## Disclaimer and License
 MIT © [Phan An](http://phanan.net). 
 
-This package is created and shared with hope that it may help someone out there, but its owner shouldn't take any responsibility for any claim, damages or other liability whatsoever. See `LICENSE`.
+This package is created and shared with hope that it may help someone out there, but its owner shouldn't take any responsibility for any claim, damages or other liability whatsoever. See [LICENSE](LICENSE).
