@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 NGINX_CONF_DIR="/etc/nginx"
 NGINX_PORT=80
